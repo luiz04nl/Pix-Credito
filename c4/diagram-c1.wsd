@@ -1,0 +1,28 @@
+
+@startuml
+' !theme aws-orange from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' !theme black-knight from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' !theme bluegray from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+
+!include DEVICONS/react.puml
+!include DEVICONS/nodejs.puml
+!include DEVICONS/mysql.puml
+!include FONTAWESOME/users.puml
+
+Person(payer, "Payer", "Payer", $sprite="payers")
+Person(receiver, "Receiver", "Receiver", $sprite="payers")
+
+Container(woovi, "Woovi", "web", "Woovi", $sprite="web")
+
+Container(cel_coin, "Cel Coin", "web", "Cel Coin", $sprite="web")
+
+Rel(payer, woovi, "Uses", "https")
+
+Rel(woovi, cel_coin, "Uses", "https")
+
+@enduml

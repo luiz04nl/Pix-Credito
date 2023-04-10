@@ -37,9 +37,15 @@ Também podemos mantar o pagamento como algo não atômico e parcial, mas essa n
   - [Diagramas de Sequencia](#sequência)
 - [BPMN](#bpmn)
 
-#### C4
+#### Diagramas C4
 
-Modelo C4...
+##### Diagrama C1
+
+![C1](out/c4/diagram-c1/diagram-c1.png)
+
+##### Diagrama C2
+
+![C2](out/c4/diagram-c2/diagram-c2.png)
 
 #### UML
 
