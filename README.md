@@ -41,11 +41,11 @@ Também podemos mantar o pagamento como algo não atômico e parcial, mas essa n
 
 ##### Diagrama C1
 
-![C1](out/c4/diagram-c1/diagram-c1.png)
+![C1](out/c4/diagram-c1-context/diagram-c1-context.png)
 
 ##### Diagrama C2
 
-![C2](out/c4/diagram-c2/diagram-c2.png)
+![C2](out/c4/diagram-c2-container/diagram-c2-container.png)
 
 #### UML
 

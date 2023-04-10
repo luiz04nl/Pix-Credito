@@ -1,0 +1,44 @@
+@startuml
+' !theme aws-orange from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' !theme black-knight from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' !theme bluegray from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!define SPRITESURL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.0/sprites
+
+!include DEVICONS/react.puml
+!include DEVICONS/nodejs.puml
+!include DEVICONS/mysql.puml
+!include FONTAWESOME/users.puml
+!include FONTAWESOME/python.puml
+!include FONTAWESOME/php.puml
+!include SPRITESURL/kong.puml
+!include SPRITESURL/aws.puml
+
+Person(payer, "Payer", "Payer", $sprite="payers")
+Person(receiver, "Receiver", "Receiver", $sprite="payers")
+
+System_Boundary(woovi, "Woovi") {
+    Container(pix_credito_front_end, "Pix Credit Front End", "react", "ix Credit Front End", $sprite="react")
+
+    Container(api_gateway, "Gateway Api", "kong", "Gateway de apis", $sprite="kong")
+
+    Container(pix_credito_api, "Pix Credit Api", "web", "Pix Credit Api", $sprite="web")
+}
+
+System_Boundary(cel_coin, "Cel Coin Todos") {
+    Container(cel_coin_api, "Cel Coin Api", "web", "Cel Coin Api", $sprite="web")
+}
+
+Rel(payer, pix_credito_front_end, "Uses", "https")
+
+Rel(pix_credito_api, cel_coin_api, "Uses", "https")
+
+Rel(pix_credito_front_end, api_gateway, "Uses", "https")
+
+Rel(api_gateway, pix_credito_api, "Uses", "https")
+
+@enduml
