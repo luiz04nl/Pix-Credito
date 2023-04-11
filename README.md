@@ -30,24 +30,24 @@ Também podemos mantar o pagamento como algo não atômico e parcial, mas essa n
 
 ## Arquitetura da Solução
 
-### Índice
+<!-- ### Índice
 
 - [C4](#c4)
 - [UML](#uml)
   - [Diagramas de Sequencia](#sequência)
-- [BPMN](#bpmn)
+- [BPMN](#bpmn) -->
 
 #### Diagramas C4
 
-##### Diagrama C1
+##### Diagrama C1 - Sistemas
 
 ![C1](out/c4/diagram-c1-context/diagram-c1-context.png)
 
-##### Diagrama C2
+##### Diagrama C2 - Containers
 
 ![C2](out/c4/diagram-c2-container/diagram-c2-container.png)
 
-#### UML
+<!-- #### UML
 
 uml...
 
@@ -61,19 +61,29 @@ BPMN...
 
 #### C4
 
-Modelo C4...
+Modelo C4... -->
 
-## Arquitetura do Software
+## Arquitetura de Software
 
-XXXXXX
+Arquiterura da implementação da api Pix Credit
 
-## Modelo de Domínio de Negócio
+### Modelos de Domínio de Negócio
 
-XXXXXX
+#### Contextos Delimitados
 
-## Modelo de Schemas de Base de Dados
+![Contexto X](out/domain/bounded-context/bounded-context.png)
 
-XXXXXX
+<!-- #### Mapa de Contextos
+
+![Contexto X](out/domain/context-map/context-map.png) -->
+
+### Modelos de Schemas de Base de Dados
+
+Sugiro a utilização de uma obordagem de persistencia de agregados, dessa forma para cada agragado sera mapeada uma collection no mongodb com praticamente a mesma estrutura, apensa sera adicionado a data de criação e alteração que não serão necessariamente mapeadas para a estrutura de domínio.
+
+<!-- ## Arquitetura de Software - Pix Credit Front End
+
+Arquiterura da implementação do front end Pix Credit
 
 ## Arquitetura?
 
@@ -92,4 +102,4 @@ XXXXXX
 issuer de crédito
 customer de uma transação
 o shopper de um customer
-seller de uma transação
+seller de uma transação -->

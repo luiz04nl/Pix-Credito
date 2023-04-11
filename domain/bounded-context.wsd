@@ -1,0 +1,120 @@
+@startuml bounded-context
+
+card  PixCredit #Yellow {
+    object PixCredit.PixCredit  {
+        id: int
+    }
+}
+
+
+' skinparam cardFontName Aapex
+' skinparam cardFontColor #Black
+' skinparam objectFontName Aapex
+' skinparam objectFontColor #Black
+' skinparam BackgroundColor #Black
+
+' Raiz de Agregação #Yellow
+' Agregados #Green
+
+' card  Shared {
+'     ' object Shared.Company #Green {
+'     '     id: int
+'     ' }
+'     ' object Shared.Unity #Green {
+'     '     id: int
+'     '     company: Company
+'     ' }
+'     ' Shared.Unity -> Shared.Company
+' }
+
+
+' card  ProductOrService {
+'     object ProductOrService.Product #Yellow {
+'         id: int
+'     }
+'     ProductOrService.Product -> Shared.Company
+
+'     object ProductOrService.Service #Yellow {
+'         id: int
+'     }
+'     ProductOrService.Service -> Shared.Company
+'     ProductOrService.Product -> Shared.Company
+
+'     ProductOrService.Service -> Supplier.Supplier
+'     ProductOrService.Product -> Supplier.Supplier
+' }
+
+' card  User {
+'     object User.User #Yellow {
+'         id: int
+'         company: Company
+'         units: Unity[]
+'     }
+'     User.User -> Shared.Unity
+'     User.User -> Shared.Company
+' }
+
+' card  Customer {
+'     object Customer.Customer #Yellow {
+'         id: int
+'         indicator: Indicator
+'         ' address: Address -- value object
+'         registeredBy: User
+'     }
+'     object Customer.Indicator #Green {
+'         id: int
+'     }
+'     Customer.Customer -> Customer.Indicator
+'     Customer.Customer -> Shared.Company
+'     Customer.Customer -> User.User
+' }
+
+' card  Stock {
+'     object Stock.Stock #Yellow {
+'         id: int
+'         unity: Unity
+'         company: Company
+'         products: Product[]
+'     }
+
+'     Stock.Stock -> Shared.Unity
+'     Stock.Stock -> Shared.Company
+
+'     Stock.Stock -> ProductOrService.Product
+' }
+
+' ' -- nao e CodefyCharge mas a implementacao de Charge pode criar uma CodefyCharge
+' card  Charge {
+'     object Charge.Charge #Yellow {
+'         id: int
+'     }
+' }
+
+' card  Order {
+'     object Order.Order #Yellow {
+'         id: int
+'         customer: Customer
+'         payment: Payment
+'         items: OrderItem[]
+'     }
+'     object Order.Customer #Green {
+'         id: int
+'     }
+'     object Order.Payment #Green {
+'         id: int
+'         creditCard: CreditCard
+'     }
+'     object Order.OrderItem #Green {
+'         id: int
+'     }
+'     Order.Order -> Order.Customer
+'     Order.Order -> Order.Payment
+'     Order.Order -> Order.OrderItem
+
+'     object Order.Payment.CreditCard #Green {
+'         id: int
+'     }
+'     Order.Payment -> Order.Payment.CreditCard  
+' }
+
+@enduml

@@ -1,9 +1,7 @@
-@startuml
-' !theme aws-orange from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
-' !theme black-knight from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
-' !theme bluegray from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+@startuml diagram-c2-container
 
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
 !define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
 !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
@@ -11,34 +9,52 @@
 
 !include DEVICONS/react.puml
 !include DEVICONS/nodejs.puml
-!include DEVICONS/mysql.puml
+!include DEVICONS/mongodb.puml
+
 !include FONTAWESOME/users.puml
 !include FONTAWESOME/python.puml
 !include FONTAWESOME/php.puml
 !include SPRITESURL/kong.puml
 !include SPRITESURL/aws.puml
 
-Person(payer, "Payer", "Payer", $sprite="payers")
-Person(receiver, "Receiver", "Receiver", $sprite="payers")
+LAYOUT_WITH_LEGEND()
 
-System_Boundary(woovi, "Woovi") {
-    Container(pix_credito_front_end, "Pix Credit Front End", "react", "ix Credit Front End", $sprite="react")
+Person(payer, "Payer", "Pagador do pagamento",)
 
-    Container(api_gateway, "Gateway Api", "kong", "Gateway de apis", $sprite="kong")
+Person(receiver, "Receiver", "Recebedor de pagamentos")
 
-    Container(pix_credito_api, "Pix Credit Api", "web", "Pix Credit Api", $sprite="web")
+System_Boundary(woovi, "Sismtea woovi") {
+    Container(pix_credito_payment_link, "Link", "react", "Link de pagamento pix crédito", $sprite="react")
+
+    Container(pix_credito_payment_admin, "Admin", "react", "Interface de administração de links de pagamentos", $sprite="react")
+
+    ' Container(api_gateway, "Gateway Api", "kong", "Gateway de apis", $sprite="kong")
+
+    Container(pix_credito_webhook, "Api Pix Webhook", "aws, kong, sqs, lambda", "Webhook para notificações de pagamento via pix crédito utilizando api gateway kong, sqs e lambda", $sprite="aws")
+
+    Container(pix_credito_api, "Api Pix Credit", "nodejs", "Api pix crédito", $sprite="nodejs")
+
+    ContainerDb(pix_credito_database, "Banco de dados Pix Credit", "mongodb", "Banco de dados pix crédito", $sprite="mongodb")
 }
 
-System_Boundary(cel_coin, "Cel Coin Todos") {
-    Container(cel_coin_api, "Cel Coin Api", "web", "Cel Coin Api", $sprite="web")
+System_Boundary(cel_coin, "Sistema Cel Coin") {
+    Container_Ext(cel_coin_api, "Cel Coin Api", "web", "Api da cel coin para pagamentos", $sprite="web")
 }
 
-Rel(payer, pix_credito_front_end, "Uses", "https")
+Rel(payer, pix_credito_payment_link, "Faz pagamentos via", "https")
 
-Rel(pix_credito_api, cel_coin_api, "Uses", "https")
+Rel(receiver, pix_credito_payment_admin, "Gera link de pagamento via", "https")
 
-Rel(pix_credito_front_end, api_gateway, "Uses", "https")
+Rel(pix_credito_api, cel_coin_api, "Processa os pagamentos via", "https")
 
-Rel(api_gateway, pix_credito_api, "Uses", "https")
+Rel(pix_credito_api, pix_credito_database, "Armazena e obtem os estados via", "mongodb")
+
+Rel(pix_credito_payment_link, pix_credito_api, "Realiza o pagamento via api gateway kong pelo protocolo", "https")
+
+Rel(pix_credito_payment_admin, pix_credito_api, "Gera link de pagamento via api gateway kong pelo protocolo", "https")
+
+Rel(cel_coin_api, pix_credito_webhook, "Notifica pagamentos via api gateway kong pelo protocolo", "https")
+
+Rel(pix_credito_webhook, pix_credito_api, "Redireciona as mensagens para o contexto pix crédito via api gateway kong pelo protocolo", "https")
 
 @enduml

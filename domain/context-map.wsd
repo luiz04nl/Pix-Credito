@@ -1,0 +1,37 @@
+@startuml context-map
+' ' !theme aws-orange from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' !theme black-knight from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+' ' !theme bluegray from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+
+' skinparam cardFontName Aapex
+' skinparam cardFontColor #Black
+' skinparam BackgroundColor #Black
+
+' #Yellow - Domínio principal -> é o que traz valor para o negócio. É onde a principal lógica fica;
+' #Green - Domínio auxiliar  -> é o que suporta o domínio principal. Pode trazer informações ou atividades necessárias, porém que não representam o principal do negócio;
+' #Grey - Domínio genérico -> é um domínio que não traz uma regra específica do negócio em questão. Pode ser um CMS, uma área de email marketing, um serviço de SMS. Pra ajudar a visualizar, pode-se perguntar: “uma solução externa resolveria esse problema?” Se sim, provavelmente se trata de um domínio genérico.
+' #Blue - Núcleo Compartilhado -> é um projeto que é consumido por mais de um subdomínio. Ele promove a eficiência, por evitar que determinado trecho seja replicado em dois domínios
+
+' Parceria - Padrao
+
+' U Cliente Fornecedor D - Normalmente é o cenário de duas equipes distintas, da mesma empresa ou não, desenvolvendo sistemas que se comunicam. 
+' É comum haver um grau de hierarquia, ou seja, uma equipe tem uma certa liberdade em alterar a estrutura da comunicação (cliente) e a outra precisa constantemente 
+' se adaptar a essas alterações (fornecedor)
+
+' Conformista: É o caso de um sistema em que não há adaptação por um dos lados. Pode ser um projeto Legacy,
+'  ou projeto externo que deixou de ter suporte, por exemplo. Para que a comunicação ocorra, é necessário que o projeto local (ou em andamento) traduza as entradas e saídas para esse sistema, enquanto fizer sentido utilizá-lo;
+
+' Linguagem Publicada: Normalmente, é um domínio genérico, com uma especificação sobre como a comunicação deve ocorrer. Pode ser uma API, Serviço, ou Driver;
+
+' Camada anticorrupção: É uma camada que fornece a comunicação entre sistemas, “traduzindo” as entradas e saídas. Pode ser um jeito eficaz de conviver com projetos Legacys — com ela, o domínio principal não será poluído com débitos técnicos associados ao projeto Legacy.
+' Voltemos ao nosso case. Iniciamos com uma visão superficial do domí
+
+' ######## Main Api #################################
+
+card PixCredit #Yellow
+
+card ContextoY #Yellow
+
+ContextoY -> PixCredit: Parceria
+
+@enduml

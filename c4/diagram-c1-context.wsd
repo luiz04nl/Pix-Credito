@@ -1,10 +1,7 @@
-
-@startuml
-' !theme aws-orange from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
-' !theme black-knight from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
-' !theme bluegray from https://raw.githubusercontent.com/plantuml/plantuml/master/themes
+@startuml diagram-c1-context
 
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
 !define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
 !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
@@ -14,15 +11,21 @@
 !include DEVICONS/mysql.puml
 !include FONTAWESOME/users.puml
 
-Person(payer, "Payer", "Payer", $sprite="payers")
-Person(receiver, "Receiver", "Receiver", $sprite="payers")
+LAYOUT_WITH_LEGEND()
 
-Container(woovi, "Woovi", "web", "Woovi", $sprite="web")
+Person(payer, "Payer", "Pagador do pagamento",)
+Person(receiver, "Receiver", "Recebedor de pagamentos")
 
-Container(cel_coin, "Cel Coin", "web", "Cel Coin", $sprite="web")
+System(woovi, "Woovi", "Sistema woovi")
 
-Rel(payer, woovi, "Uses", "https")
+System_Ext(cel_coin, "Cel Coin", "Parceiro para pagamentos via pix e cartão de crédito")
 
-Rel(woovi, cel_coin, "Uses", "https")
+Rel(payer, woovi, "Faz pagamentos via", "https")
+
+Rel(receiver, woovi, "Gera link de pagamento via", "https")
+
+Rel(woovi, cel_coin, "Processa os pagamentos via", "https")
+
+Rel(cel_coin, woovi, "Notifica pagamentos via", "https") 
 
 @enduml
