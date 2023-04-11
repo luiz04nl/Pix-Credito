@@ -16,16 +16,16 @@ LAYOUT_WITH_LEGEND()
 Person(payer, "Payer", "Pagador do pagamento",)
 Person(receiver, "Receiver", "Recebedor de pagamentos")
 
-System(woovi, "Woovi", "Sistema woovi")
+System(mainApplication, "MainApplication", "Sistema mainApplication")
 
 System_Ext(cel_coin, "Cel Coin", "Parceiro para pagamentos via pix e cartão de crédito")
 
-Rel(payer, woovi, "Faz pagamentos via", "https")
+Rel(payer, mainApplication, "Faz pagamentos via", "https")
 
-Rel(receiver, woovi, "Gera link de pagamento via", "https")
+Rel(receiver, mainApplication, "Gera link de pagamento via", "https")
 
-Rel(woovi, cel_coin, "Processa os pagamentos via", "https")
+Rel(mainApplication, cel_coin, "Processa os pagamentos via", "https")
 
-Rel(cel_coin, woovi, "Notifica pagamentos via", "https") 
+Rel(cel_coin, mainApplication, "Notifica pagamentos via", "https") 
 
 @enduml

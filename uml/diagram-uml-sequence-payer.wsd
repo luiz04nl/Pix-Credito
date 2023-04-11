@@ -1,0 +1,51 @@
+@startuml diagram-uml-sequence-payer
+
+' # OBS - Talvez usar use-case diagram with Plantuml seje bem melhor
+' https://www.youtube.com/watch?v=gSx8s9F48L8
+
+actor Payer #blue
+
+participant "Link de pagamento" as PaymentLink #7994ed
+
+participant "Api de pagamentos MainApplication" as PaymentApi #7994ed
+
+participant "Parceiro de pagamentos via cartão de crédito e pix" as PaymentPartner #7994ed
+
+participant "Banco ou conta de pagamento" as BankApp #7994ed
+
+actor Receiver #green
+
+Payer->PaymentLink: Navega até o endereço informado e solicita o link de pagamento
+
+PaymentLink->Payer: Retorna a página de pagamento
+
+Payer->PaymentPartner: Confirma o valor e seleciona a quantidade de parcelas, se a quantidade de parcelas for maior que uma, se torna necessário informar e solicitar a tokenização os dados do cartão ao parceiro
+
+PaymentPartner->Payer: Valida e tokeniza dados do cartão de crédito
+
+Payer->PaymentLink: Ao chegar na ultima tela automaticamente envia os dados do cartão tokenizado se houverem junto com as informações da promessa de pagamento via pix
+
+PaymentLink->PaymentApi: Envias os dados a api da mainApplication
+
+PaymentApi->Payer: Opicionalmente a MainApplication pode tambem enviar os dados do pix por email ou outro mecanismo de notificação
+
+Payer->BankApp: Realiza o pagamento via pix.
+
+BankApp->PaymentPartner: Notifica o pagamento via pix assim que ocorrer
+
+PaymentPartner->PaymentApi: Notifica o pagamento via pix assim que ocorrer
+
+PaymentApi->Payer: Caso a notificação do pagamento via pix chegue informando alguma falha, opicionalmente pode avisar o pagador para realizar alguma intervenção
+
+PaymentApi->PaymentPartner: Caso a notificação do pagamento chegue com sucesso, realiza a tentativa de cobrança pelos dados do cartão validado e tokenizado  
+
+PaymentPartner->PaymentApi: Retorna se foi possível cobrar o não, imagino um fluxo sincrono mas que dependendo do parceiro pode ser asincrono também.
+
+PaymentApi->Payer: Caso tanto o pagamento via pix quanto o pagamento via cartão de crédito sejam realizados, definir o pagamento como pago e notifica o pagamento e o recebedor por algum meio. 
+
+PaymentApi->Receiver: Caso tanto o pagamento via pix quanto o pagamento via cartão de crédito sejam realizados, definir o pagamento como pago e notifica o pagador e o recebedor por algum meio. 
+
+PaymentApi->Payer: Caso o pagamento via pix ocorra mas o pagamento via cartão não, é necessário informar o pagador para tomar providencias ou simplementar devolver o valor pix.
+
+
+@enduml

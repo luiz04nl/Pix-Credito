@@ -8,15 +8,10 @@ Partindo dos pressupostos:
 - Existe um forma prévia do recebedor enviar para o pagador um link com a definição inicial do valor e opções de parcelamento.
 - Na prática o sistema do pix só será utilizado para a primeira parcela, as demais serão pagas atráves de um cartão de crédito de forma parcelada, limitada ao limite do cartão.
 
-imagem 1
-![Fluxo](image/pix-credito-flow.png)
-
 Embora o pagamento não seje totalmente feito via pix, me parece rasoável, principalmente da pespectiva de modelagem de domínio, que o pagamento deva acontecer como uma transação única.
 
 Na minha visão, o cartão de crédito deve ser validado antes de exibir as informações de pagamento via pix, em sequida na notificação de pagamento com sucesso via pix o sistema deve tentar realizar a cobrança via cartão de crédito, que pode falhar por inúmeros motivos, incluindo falta de saldo e logo depois ao obter a resposta da tentativa em caso de falha, podemos
 implementar uma sugestão de troca das informações do cartão de forma asincrona, e não sendo possível mesmo depois de um tempo a primeira parcela via pix precisaria ser estornada ou devolvida de alguma forma.
-
-No entando, pela esperiência de usuario que interpreto a partir do fluxo na imagem 1, acima, não seria tão trivial.
 
 Posso não estar entendendo bem, mas me parece que a etapa de pagamento do QR Code do pix bloquea o restando do fluxo aguardando confirmação, como uma etapa atômica e em seguida na próxima etapa é feito o pagamento via cartão de crédito também como uma etapa atômica.
 Conjecturo que um front end rico orquestará essas operações garatindo a atômicidade final do fluxo.
@@ -47,39 +42,32 @@ Também podemos mantar o pagamento como algo não atômico e parcial, mas essa n
 
 ![C2](out/c4/diagram-c2-container/diagram-c2-container.png)
 
-<!-- #### UML
-
-uml...
-
-##### Sequência
-
-sequence...
-
-#### BPMN
-
-BPMN...
-
-#### C4
-
-Modelo C4... -->
-
 ## Arquitetura de Software
 
-Arquiterura da implementação da api Pix Credit
+Detalhes arquiteturais que fazem parte da implementação do software
 
+##### Diagrama de Sequência - Casos de uso - Criação Link de Pagamento Pix Crédito
+
+![Sequencia](out/uml/diagram-uml-sequence-receiver/diagram-uml-sequence-receiver.png)
+
+##### Diagrama de Sequência - Casos de uso - Pagamento Pix Crédito
+
+![Sequencia](out/uml/diagram-uml-sequence-payer/diagram-uml-sequence-payer.png)
+
+<!--
 ### Modelos de Domínio de Negócio
 
 #### Contextos Delimitados
 
-![Contexto X](out/domain/bounded-context/bounded-context.png)
+![Contexto X](out/domain/bounded-context/bounded-context.png) -->
 
 <!-- #### Mapa de Contextos
 
 ![Contexto X](out/domain/context-map/context-map.png) -->
 
-### Modelos de Schemas de Base de Dados
+<!-- ### Modelos de Schemas de Base de Dados
 
-Sugiro a utilização de uma obordagem de persistencia de agregados, dessa forma para cada agragado sera mapeada uma collection no mongodb com praticamente a mesma estrutura, apensa sera adicionado a data de criação e alteração que não serão necessariamente mapeadas para a estrutura de domínio.
+Sugiro a utilização de uma obordagem de persistencia de agregados, dessa forma para cada agragado sera mapeada uma collection no mongodb com praticamente a mesma estrutura, apensa sera adicionado a data de criação e alteração que não serão necessariamente mapeadas para a estrutura de domínio. -->
 
 <!-- ## Arquitetura de Software - Pix Credit Front End
 

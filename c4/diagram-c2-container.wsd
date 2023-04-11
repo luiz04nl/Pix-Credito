@@ -23,14 +23,14 @@ Person(payer, "Payer", "Pagador do pagamento",)
 
 Person(receiver, "Receiver", "Recebedor de pagamentos")
 
-System_Boundary(woovi, "Sismtea woovi") {
+System_Boundary(mainApplication, "Sistema mainApplication") {
     Container(pix_credito_payment_link, "Link", "react", "Link de pagamento pix crédito", $sprite="react")
 
-    Container(pix_credito_payment_admin, "Admin", "react", "Interface de administração de links de pagamentos", $sprite="react")
+    Container(pix_credito_payment_receiver, "Receiver", "react", "Interface de recebedores de links de pagamentos", $sprite="react")
 
     ' Container(api_gateway, "Gateway Api", "kong", "Gateway de apis", $sprite="kong")
 
-    Container(pix_credito_webhook, "Api Pix Webhook", "aws, kong, sqs, lambda", "Webhook para notificações de pagamento via pix crédito utilizando api gateway kong, sqs e lambda", $sprite="aws")
+    ContainerQueue(pix_credito_webhook, "Api Pix Webhook", "aws, kong, sqs, lambda", "Webhook para notificações de pagamento via pix crédito utilizando api gateway kong, sqs e lambda", $sprite="aws")
 
     Container(pix_credito_api, "Api Pix Credit", "nodejs", "Api pix crédito", $sprite="nodejs")
 
@@ -43,7 +43,7 @@ System_Boundary(cel_coin, "Sistema Cel Coin") {
 
 Rel(payer, pix_credito_payment_link, "Faz pagamentos via", "https")
 
-Rel(receiver, pix_credito_payment_admin, "Gera link de pagamento via", "https")
+Rel(receiver, pix_credito_payment_receiver, "Gera link de pagamento via", "https")
 
 Rel(pix_credito_api, cel_coin_api, "Processa os pagamentos via", "https")
 
@@ -51,7 +51,7 @@ Rel(pix_credito_api, pix_credito_database, "Armazena e obtem os estados via", "m
 
 Rel(pix_credito_payment_link, pix_credito_api, "Realiza o pagamento via api gateway kong pelo protocolo", "https")
 
-Rel(pix_credito_payment_admin, pix_credito_api, "Gera link de pagamento via api gateway kong pelo protocolo", "https")
+Rel(pix_credito_payment_receiver, pix_credito_api, "Gera link de pagamento via api gateway kong pelo protocolo", "https")
 
 Rel(cel_coin_api, pix_credito_webhook, "Notifica pagamentos via api gateway kong pelo protocolo", "https")
 

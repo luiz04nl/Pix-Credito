@@ -1,0 +1,21 @@
+@startuml diagram-uml-sequence-receiver
+
+actor Receiver #green
+
+participant "Interface de Recebedor" as PaymentReceiverFront #7994ed
+
+participant "Api de pagamentos MainApplication" as PaymentApi #7994ed
+
+actor Payer #blue
+
+Receiver->PaymentReceiverFront: Navega até o endereço informado e solicita a página inicial do recebedor
+
+PaymentReceiverFront->Receiver: Retorna a página de recebimento
+
+Receiver->PaymentReceiverFront: Informa os dados como valor e quantidade máxima de parcelas
+
+PaymentReceiverFront->PaymentApi: Informa os dados como valor e quantidade máxima de parcelas
+
+PaymentApi->Payer: Envia o link para o pagador
+
+@enduml
